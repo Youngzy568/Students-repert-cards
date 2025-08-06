@@ -6,8 +6,6 @@
 #include <sstream>
 using namespace std;
 
-const int MAX = 100;
-
 struct Student {
     string id;
     string name;
@@ -27,25 +25,25 @@ public:
 
     void addStudent() {
         Student temp;
-        cout << "ÇëÊäÈëÑ§Éúid£¬ÐÕÃû£¬ÓïÎÄ£¬ÊýÑ§£¬Ó¢Óï³É¼¨£º" << endl;
+        cout << "è¯·è¾“å…¥å­¦ç”Ÿidï¼Œå§“åï¼Œè¯­æ–‡ï¼Œæ•°å­¦ï¼Œè‹±è¯­æˆç»©ï¼š" << endl;
         cin >> temp.id >> temp.name >> temp.chinese >> temp.math >> temp.english;
         temp.total = temp.chinese + temp.math + temp.english;
 		students.push_back(temp);
-        cout << "Ìí¼Ó³É¹¦£¡µ±Ç°×ÜÈËÊý£º" << students.size() << endl;
+        cout << "æ·»åŠ æˆåŠŸï¼å½“å‰æ€»äººæ•°ï¼š" << students.size() << endl;
     }
 
     void showAllStudents() const {
         if (students.size() == 0) {
-            cout << "µ±Ç°Ã»ÓÐÑ§ÉúÐÅÏ¢¡£" << endl;
+            cout << "å½“å‰æ²¡æœ‰å­¦ç”Ÿä¿¡æ¯ã€‚" << endl;
             return;
         }
         for (auto& student:students) {
             cout << "ID: " << student.id
-                << ", ÐÕÃû: " << student.name
-                << ", ÓïÎÄ: " << student.chinese
-                << ", ÊýÑ§: " << student.math
-                << ", Ó¢Óï: " << student.english
-                << ", ×Ü·Ö: " << student.total << endl;
+                << ", å§“å: " << student.name
+                << ", è¯­æ–‡: " << student.chinese
+                << ", æ•°å­¦: " << student.math
+                << ", è‹±è¯­: " << student.english
+                << ", æ€»åˆ†: " << student.total << endl;
         }
     }
 
@@ -53,26 +51,26 @@ public:
        sort(students.begin(), students.end(), [](const Student& a, const Student& b) {
             return a.total > b.total;
 		   });
-        cout << "ÒÑ°´×Ü·Ö½µÐòÅÅÐò¡£" << endl;
+        cout << "å·²æŒ‰æ€»åˆ†é™åºæŽ’åºã€‚" << endl;
     }
 
     void searchStudent() const {
         string id;
-        cout << "ÇëÊäÈëÒª²éÕÒµÄÑ§Éúid£º" << endl;
+        cout << "è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„å­¦ç”Ÿidï¼š" << endl;
         cin >> id;
         for (auto& student : students) {
             if (student.id == id) {
-                cout << "ÕÒµ½Ñ§ÉúÐÅÏ¢£º" << endl;
+                cout << "æ‰¾åˆ°å­¦ç”Ÿä¿¡æ¯ï¼š" << endl;
                 cout << "ID: " << student.id
-                    << ", ÐÕÃû: " << student.name
-                    << ", ÓïÎÄ: " << student.chinese
-                    << ", ÊýÑ§: " << student.math
-                    << ", Ó¢Óï: " << student.english
-                    << ", ×Ü·Ö: " << student.total << endl;
+                    << ", å§“å: " << student.name
+                    << ", è¯­æ–‡: " << student.chinese
+                    << ", æ•°å­¦: " << student.math
+                    << ", è‹±è¯­: " << student.english
+                    << ", æ€»åˆ†: " << student.total << endl;
 				return;
             }
         }
-        cout << "²éÎÞ´ËÈË£¡" << endl;
+        cout << "æŸ¥æ— æ­¤äººï¼" << endl;
     }
     void saveToFile(const string& filename) const {
         ofstream fout(filename);
@@ -88,7 +86,7 @@ public:
     void loadFromFile(const string& filename) {
 		ifstream fin(filename);
         if (!fin) {
-            cout << "ÎÞ·¨´ò¿ªÎÄ¼þ£¡" << endl;
+            cout << "æ— æ³•æ‰“å¼€æ–‡ä»¶ï¼" << endl;
             return;
         }
         students.clear();
@@ -101,23 +99,37 @@ public:
 			students.push_back(temp);
         }
         fin.close();
-		cout << "Êý¾Ý¼ÓÔØ³É¹¦£¡µ±Ç°×ÜÈËÊý£º" << students.size() << endl;
+		cout << "æ•°æ®åŠ è½½æˆåŠŸï¼å½“å‰æ€»äººæ•°ï¼š" << students.size() << endl;
     }
+    void deleteStudent() {
+		string id;
+		cout << "è¯·è¾“å…¥è¦åˆ é™¤çš„å­¦ç”Ÿidï¼š" << endl;
+		cin >> id;
+        for (auto it = students.begin();it != students.end(); it++) {
+            if (it->id == id) {
+				students.erase(it);
+				cout << "åˆ é™¤æˆåŠŸï¼" << endl;
+				return;
+            }
+        }
+		cout << "æŸ¥æ— æ­¤äººï¼Œåˆ é™¤å¤±è´¥ï¼" << endl;
+	}
 };
 int main() {
     StudentManager manager;
     int choice;
-
+    manager.loadFromFile("students.txt");
     while (true) {
-        cout << "\n==== Ñ§Éú³É¼¨¹ÜÀíÏµÍ³ ====" << endl;
-        cout << "1. Ìí¼ÓÑ§ÉúÐÅÏ¢" << endl;
-        cout << "2. ÏÔÊ¾ËùÓÐÑ§ÉúÐÅÏ¢" << endl;
-        cout << "3. °´×Ü·ÖÅÅÐò" << endl;
-        cout << "4. ²éÑ¯Ñ§Éú£¨°´Ñ§ºÅ£©" << endl;
-        cout << "5. ±£´æÑ§ÉúÐÅÏ¢µ½ÎÄ¼þ" << endl;
-        cout << "6. ´ÓÎÄ¼þ¼ÓÔØÑ§ÉúÐÅÏ¢" << endl;
-        cout << "7. ÍË³öÏµÍ³" << endl;
-        cout << "ÇëÊäÈëÄãµÄÑ¡Ôñ£º";
+        cout << "\n==== å­¦ç”Ÿæˆç»©ç®¡ç†ç³»ç»Ÿ ====" << endl;
+        cout << "1. æ·»åŠ å­¦ç”Ÿä¿¡æ¯" << endl;
+        cout << "2. æ˜¾ç¤ºæ‰€æœ‰å­¦ç”Ÿä¿¡æ¯" << endl;
+        cout << "3. æŒ‰æ€»åˆ†æŽ’åº" << endl;
+        cout << "4. æŸ¥è¯¢å­¦ç”Ÿï¼ˆæŒ‰å­¦å·ï¼‰" << endl;
+		cout << "5. åˆ é™¤å­¦ç”Ÿä¿¡æ¯" << endl;
+        //cout << "6. ä¿å­˜å­¦ç”Ÿä¿¡æ¯åˆ°æ–‡ä»¶" << endl;
+        //cout << "7. ä»Žæ–‡ä»¶åŠ è½½å­¦ç”Ÿä¿¡æ¯" << endl;
+        cout << "0. é€€å‡ºç³»ç»Ÿ" << endl;
+        cout << "è¯·è¾“å…¥ä½ çš„é€‰æ‹©ï¼š";
         cin >> choice;
 
         switch (choice) {
@@ -125,10 +137,11 @@ int main() {
         case 2: manager.showAllStudents(); break;
         case 3: manager.sortByTotal(); break;
         case 4: manager.searchStudent(); break;
-		case 5: manager.saveToFile("students.txt"); break;
-		case 6: manager.loadFromFile("students.txt"); break;
-        case 7: cout << "ÍË³ö³É¹¦£¬¸ÐÐ»Ê¹ÓÃ£¡" << endl; return 0;
-        default: cout << "ÎÞÐ§Ñ¡Ïî£¬ÇëÖØÐÂÊäÈë£¡" << endl;
+        case 5: manager.deleteStudent(); break;
+        //case 6: manager.saveToFile("students.txt"); break;
+		//case 7: manager.loadFromFile("students.txt"); break;
+        case 0:{ cout << "é€€å‡ºæˆåŠŸï¼Œæ„Ÿè°¢ä½¿ç”¨ï¼" << endl;manager.saveToFile("students.txt");return 0; }
+        default: cout << "æ— æ•ˆé€‰é¡¹ï¼Œè¯·é‡æ–°è¾“å…¥ï¼" << endl;
         }
     }
 
